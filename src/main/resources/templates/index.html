@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Workout Track</title>
+    <link rel="stylesheet" href="/assets/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="/assets/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="/assets/vendors/jvectormap/jquery-jvectormap.css">
+    <link rel="stylesheet" href="/assets/vendors/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="/assets/vendors/owl-carousel-2/owl.carousel.min.css">
+    <link rel="stylesheet" href="/assets/vendors/owl-carousel-2/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="shortcut icon" href="/assets/images/logoTwo.jpg" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://jqueryui.com/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+  </head>
+  <body>
+    <div class="container-scroller">
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
+
+          <a class="sidebar-brand brand-logo-mini" href="/homePage"><img src="/assets/images/logo.png" alt="logo" /></a>
+
+        </div>
+        <ul class="nav">
+          <li sec:authorize="isAuthenticated()" class="nav-item profile">
+            <div class="profile-desc">
+              <div class="profile-pic">
+                <div class="count-indicator">
+                  <!-- Here insert profile picture -->
+                  <img class="img-xs rounded-circle " src="/img/prof.png" alt="">
+                  <span class="count bg-success"></span>
+                </div>
+                <div class="profile-name">
+                  <h5 class="mb-0 font-weight-normal" th:text="${#authentication.name}"></h5>
+                </div>
+              </div>
+              <a href="#" id="profile-dropdown" data-toggle="dropdown"><i class="mdi mdi-dots-vertical"></i></a>
+              <div class="dropdown-menu dropdown-menu-right sidebar-dropdown preview-list" aria-labelledby="profile-dropdown">
+                <a th:href="@{/user/profile-info}" class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <div class="preview-icon bg-dark rounded-circle">
+                      <i class="mdi mdi-account-box text-primary"></i>
+                    </div>
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject ellipsis mb-1 text-small">Profile information</p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <div class="preview-icon bg-dark rounded-circle">
+                      <i class="mdi mdi-calendar-today text-success"></i>
+                    </div>
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject ellipsis mb-1 text-small">To-do list</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </li>
+          <li class="nav-item nav-category">
+            <span class="nav-link">Navigation</span>
+          </li>
+
+          <li class="nav-item menu-items">
+            <a class="nav-link" th:href="@{/homePage}">
+              <span class="menu-icon">
+                <i class="mdi mdi-home-outline"></i>
+              </span>
+              <span class="menu-title">Home</span>
+            </a>
+          </li>
+          <li th:if="${measurement != null}" class="nav-item menu-items" sec:authorize="isAuthenticated()">
+            <a class="nav-link" th:href="@{/measurement}">
+              <span class="menu-icon">
+                <i class="mdi mdi-ruler"></i>
+              </span>
+              <span class="menu-title">My measurement</span>
+            </a>
+          </li>
+          <li th:if="${measurement != null}" class="nav-item menu-items" sec:authorize="isAuthenticated()">
+            <a class="nav-link" th:href="@{/goals}">
+              <span class="menu-icon">
+                <i class="mdi mdi-star-box"></i>
+              </span>
+              <span class="menu-title">Measurements goals</span>
+            </a>
+          </li>
+          <li th:if="${measurement != null}" class="nav-item menu-items" sec:authorize="isAuthenticated()">
+            <a class="nav-link" th:href="@{/category}">
+              <span class="menu-icon">
+                <i class="mdi mdi-weight-kilogram"></i>
+              </span>
+              <span class="menu-title">Exercises</span>
+            </a>
+          </li>
+          <li th:if="${measurement != null}" class="nav-item menu-items" sec:authorize="isAuthenticated()">
+            <a class="nav-link" th:href="@{/workouts}">
+              <span class="menu-icon">
+                <i class="mdi mdi-dumbbell"></i>
+              </span>
+              <span class="menu-title">My Workouts</span>
+            </a>
+          </li>
+          <li th:if="${measurement != null}" class="nav-item menu-items" sec:authorize="isAuthenticated()">
+            <a class="nav-link" th:href="@{/calendar}">
+              <span class="menu-icon">
+                <i class="mdi mdi-calendar-blank-outline"></i>
+              </span>
+              <span class="menu-title">My calendar</span>
+            </a>
+          </li>
+          <li th:if="${measurement != null}" class="nav-item menu-items" sec:authorize="isAuthenticated()">
+            <a class="nav-link" th:href="@{/help}">
+              <span class="menu-icon">
+                <i class="mdi mdi-help-circle"></i>
+              </span>
+              <span class="menu-title">Help</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <nav class="navbar p-0 fixed-top d-flex flex-row">
+          <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
+            <a class="navbar-brand brand-logo-mini" href="index.html"><img src="/assets/images/logo.png" alt="logo" /></a>
+          </div>
+          <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
+            <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+              <span class="mdi mdi-menu"></span>
+            </button>
+
+            <ul class="navbar-nav navbar-nav-right">
+              <li class="nav-item dropdown d-none d-lg-block">
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="createbuttonDropdown">
+                  <h6 class="p-3 mb-0">Projects</h6>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item preview-item">
+                    <div class="preview-thumbnail">
+                      <div class="preview-icon bg-dark rounded-circle">
+                        <i class="mdi mdi-file-outline text-primary"></i>
+                      </div>
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject ellipsis mb-1">Software Development</p>
+                    </div>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item preview-item">
+                    <div class="preview-thumbnail">
+                      <div class="preview-icon bg-dark rounded-circle">
+                        <i class="mdi mdi-web text-info"></i>
+                      </div>
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject ellipsis mb-1">UI Development</p>
+                    </div>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item preview-item">
+                    <div class="preview-thumbnail">
+                      <div class="preview-icon bg-dark rounded-circle">
+                        <i class="mdi mdi-layers text-danger"></i>
+                      </div>
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject ellipsis mb-1">Software Testing</p>
+                    </div>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <p class="p-3 mb-0 text-center">See all projects</p>
+                </div>
+              </li>
+              <li class="nav-item nav-settings d-none d-lg-block">
+                <a class="nav-link" href="#">
+                  <i class="mdi mdi-view-grid"></i>
+                </a>
+              </li>
+              <li class="nav-item dropdown border-left" sec:authorize="isAuthenticated()">
+                <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
+                  <i class="mdi mdi-bell"></i>
+                  <span th:if="${hasEvent != true}" id="notif" class="count bg-danger"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown" th:if="${hasEvent != true}">
+                  <h6 class="p-3 mb-0">Notifications</h6>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item preview-item">
+                    <div class="preview-thumbnail">
+                      <div class="preview-icon bg-dark rounded-circle">
+                        <i class="mdi mdi-calendar text-success"></i>
+                      </div>
+                    </div>
+                    <div class="preview-item-content" style="width: 280px; white-space: normal; word-wrap: break-word; overflow-wrap: break-word; ">
+                      <p class="preview-subject mb-1">Reminder</p>
+                      <p class="text-muted mb-4"> Just a reminder to do your workout today! </p>
+                    </div>
+                  </a>
+                </div>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown" th:if="${hasEvent == true}">
+                    <div class="preview-item-content" style="width: 280px; white-space: normal; word-wrap: break-word; overflow-wrap: break-word; ">
+                      <p class="text-muted mb-4"> No new notifications </p>
+                    </div>
+                  </a>
+                </div>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
+                  <div class="navbar-profile">
+                    <p class="mb-0 d-none d-sm-block navbar-profile-name" sec:authorize="isAuthenticated()" th:text="${#authentication.name}"></p>
+                    <i class="mdi mdi-menu-down d-none d-sm-block"></i>
+                  </div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
+                  <h6 class="p-3 mb-0">Profile</h6>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item preview-item" th:href="@{/user/profile-info}" sec:authorize="isAuthenticated()">
+                    <div class="preview-thumbnail">
+                      <div class="preview-icon bg-dark rounded-circle">
+                        <i class="mdi mdi-settings text-success"></i>
+                      </div>
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject mb-1">Settings</p>
+                    </div>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item preview-item" href="/logout" sec:authorize="isAuthenticated()">
+                    <div class="preview-thumbnail">
+                      <div class="preview-icon bg-dark rounded-circle">
+                        <i class="mdi mdi-logout text-danger"></i>
+                      </div>
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject mb-1">Logout</p>
+                    </div>
+                  </a>
+                  <a class="dropdown-item preview-item" href="/login" sec:authorize="isAnonymous()">
+                    <div class="preview-thumbnail">
+                      <div class="preview-icon bg-dark rounded-circle">
+
+                        <i class="mdi mdi-login text-success"></i>
+                      </div>
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject mb-1">Login</p>
+                    </div>
+                  </a>
+                  <div class="dropdown-divider" sec:authorize="isAuthenticated()"></div>
+                  <p class="p-3 mb-0 text-center" sec:authorize="isAuthenticated()">Advanced settings</p>
+                </div>
+              </li>
+            </ul>
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+              <span class="mdi mdi-format-line-spacing"></span>
+            </button>
+          </div>
+        </nav>
+        <!-- partial -->
+        <div class="main-panel">
+          <!-- Your main content area -->
+          <section th:replace="~{${bodyContent}}"></section>
+        </div>
+      </div>
+    </div>
+    <script src="/assets/vendors/js/vendor.bundle.base.js"></script>
+    <script src="/assets/vendors/chart.js/Chart.min.js"></script>
+    <script src="/assets/vendors/progressbar.js/progressbar.min.js"></script>
+    <script src="/assets/vendors/jvectormap/jquery-jvectormap.min.js"></script>
+    <script src="/assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="/assets/vendors/owl-carousel-2/owl.carousel.min.js"></script>
+    <script src="/assets/js/off-canvas.js"></script>
+    <script src="/assets/js/hoverable-collapse.js"></script>
+    <script src="/assets/js/misc.js"></script>
+    <script src="/assets/js/settings.js"></script>
+    <script src="/assets/js/todolist.js"></script>
+    <script src="/assets/js/dashboard.js"></script>
+
+
+
+  </body>
+</html>
