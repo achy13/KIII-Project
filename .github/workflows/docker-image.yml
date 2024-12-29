@@ -29,6 +29,6 @@ jobs:
       - name: Build and push db image (Optional)
         uses: docker/build-push-action@v5
         with:
-          context: ./path-to-db-dockerfile 
+          context: ./
           push: true
           tags: bojkikeva/postgres:latest
