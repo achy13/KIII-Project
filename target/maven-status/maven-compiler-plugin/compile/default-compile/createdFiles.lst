@@ -1,0 +1,11 @@
+com\form\securelogin\controller\AuthController.class
+com\form\securelogin\service\UserService.class
+com\form\securelogin\SecureLoginApplication.class
+com\form\securelogin\config\SpringSecurity.class
+com\form\securelogin\repository\UserRepository.class
+com\form\securelogin\service\impl\UserServiceImpl.class
+com\form\securelogin\repository\RoleRepository.class
+com\form\securelogin\model\User.class
+com\form\securelogin\service\impl\CustomUserDetailsService.class
+com\form\securelogin\model\UserDto.class
+com\form\securelogin\model\Role.class
