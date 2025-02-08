@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:text="${title}">Top Books</title>
+  <meta charset="UTF-8">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .book-image {
+      width: 100%; /* Adjust width to make image fit the card */
+      height: 200px; /* Set a fixed height */
+      object-fit: cover; /* Ensures the image maintains aspect ratio and fills the box */
+    }
+
+    /* Fixed "Back to Home" button */
+    .back-to-home {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000; /* Ensures the button stays on top of other elements */
+      padding: 10px 20px;
+      background-color: #007bff; /* Bootstrap primary blue */
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none; /* Removes underline */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds subtle shadow for better visibility */
+      transition: background-color 0.3s, transform 0.3s; /* Smooth transition for hover effects */
+    }
+
+    .back-to-home:hover {
+      background-color: #0056b3; /* Darker shade of blue on hover */
+      transform: translateY(-2px); /* Slight lift effect */
+    }
+
+    .back-to-home:active {
+      background-color: #003366; /* Even darker shade when clicked */
+      transform: translateY(0); /* Reset the lift effect when clicked */
+    }
+  </style>
+</head>
+<body>
+
+<div class="container mt-5">
+  <h1 class="text-center mb-4" th:text="${title}">Top Books</h1>
+
+  <div class="row">
+    <!-- Iterate over books and display in columns of 3 -->
+    <div class="col-md-4" th:each="book, iterStat : ${books}">
+      <div class="card mb-4">
+        <img th:src="${book.imageUrl}" class="card-img-top book-image" alt="Book Image">
+        <div class="card-body">
+          <h5 class="card-title" th:text="${book.title}">Book Title</h5>
+          <p class="card-text">
+            <small class="text-muted" th:text="${book.author}">Author</small>
+          </p>
+          <a th:href="@{${book.bookLink}}" class="btn btn-primary">View Book</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Fixed "Back to Home" Button -->
+<a href="/" class="btn btn-secondary back-to-home">Back to Home</a>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

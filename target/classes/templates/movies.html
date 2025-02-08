@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:text="${title}">Top Movies</title>
+  <meta charset="UTF-8">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .movie-image {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+
+    /* Fixed "Back to Home" button */
+    .back-to-home {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .back-to-home:hover {
+      background-color: #0056b3;
+      transform: translateY(-2px);
+    }
+
+    .back-to-home:active {
+      background-color: #003366;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<div class="container mt-5">
+  <h1 class="text-center mb-4" th:text="${title}">Top Movies</h1>
+
+  <div class="row">
+    <!-- Iterate over movies and display in columns of 3 -->
+    <div class="col-md-4" th:each="movie, iterStat : ${movies}">
+      <div class="card mb-4">
+        <img th:src="${movie.imageUrl}" class="card-img-top movie-image" alt="Movie Image">
+        <div class="card-body">
+          <h5 class="card-title" th:text="${movie.title}">Movie Title</h5>
+          <p class="card-text">
+            <small class="text-muted">Rating: <span th:text="${movie.rating}">4.5</span></small>
+          </p>
+          <a th:href="@{${movie.movieLink}}" class="btn btn-primary">View Movie</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Fixed "Back to Home" Button -->
+<a href="/index" class="btn btn-secondary back-to-home">Back to Home</a>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
