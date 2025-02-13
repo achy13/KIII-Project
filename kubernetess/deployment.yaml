@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: projects-config
+  namespace: securelogin-namespace
+data:
+  POSTGRES_DB: "test_db"
+  POSTGRES_HOST: "postgres-service.securelogin-namespace.svc.cluster.local"
+  POSTGRES_URL: "postgres-service.securelogin-namespace.svc.cluster.local"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: projects-secret
+  namespace: securelogin-namespace
+type: Opaque
+data:
+  POSTGRES_USER: "cG9zdGdyZXM="
+  POSTGRES_PASSWORD: "MXE4NA=="
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: securelogin-app
+  namespace: securelogin-namespace
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: securelogin-app
+  template:
+    metadata:
+      labels:
+        app: securelogin-app
+    spec:
+      containers:
+        - name: securelogin-app
+          image: bojkikeva/securelogin-app:latest
+          ports:
+            - containerPort: 8088
+          env:
+            - name: POSTGRES_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: projects-config
+                  key: POSTGRES_DB
+            - name: POSTGRES_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: projects-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: projects-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: projects-config
+                  key: POSTGRES_URL
+            - name: DATABASE_URL
+              value: "postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URL):5432/$(POSTGRES_DB)"
+          envFrom:
+            - configMapRef:
+                name: projects-config
+            - secretRef:
+                name: projects-secret

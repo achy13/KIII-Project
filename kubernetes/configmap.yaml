@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: securelogin-config
+  namespace: securelogin-namespace
+data:
+  POSTGRES_DB: "test_db"
+  POSTGRES_USER: "postgres"
+  POSTGRES_PASSWORD: "1q84"
+  POSTGRES_HOST: "postgres-service.securelogin-namespace.svc.cluster.local"

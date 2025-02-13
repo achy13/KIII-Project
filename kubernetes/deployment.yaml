@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: securelogin-app
+  namespace: securelogin-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: securelogin-app
+  template:
+    metadata:
+      labels:
+        app: securelogin-app
+    spec:
+      containers:
+        - name: securelogin-app
+          image: bojkikeva/securelogin-app:latest
+          ports:
+            - containerPort: 8088
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)"
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: securelogin-secrets
+                  key: POSTGRES_USER
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: securelogin-secrets
+                  key: POSTGRES_PASSWORD
+
